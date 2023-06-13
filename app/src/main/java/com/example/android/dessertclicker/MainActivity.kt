@@ -81,13 +81,6 @@ class MainActivity : AppCompatActivity() {
 
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
-
-        // Restore the saved state.
-        if (savedInstanceState != null) {
-            revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
-            dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
-            showCurrentDessert()
-        }
     }
 
     override fun onResume() {
@@ -126,6 +119,23 @@ class MainActivity : AppCompatActivity() {
         outState.putInt(KEY_DESSERT_SOLD, dessertsSold)
 
         Log.d(TAG, "onSaveInstanceState Called")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        // Restaurar los datos guardados
+        revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
+        dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
+
+        // Actualizar la interfaz de usuario con los datos restaurados
+        binding.revenue = revenue
+        binding.amountSold = dessertsSold
+
+        // Mostrar el postre actual
+        showCurrentDessert()
+
+        Log.d(TAG, "onRestoreInstanceState Called")
     }
 // endregion
 
@@ -170,9 +180,9 @@ class MainActivity : AppCompatActivity() {
     }
 // endregion
 
-    // region === Menu methods ===
+// region === Menu methods ===
     private fun onShare() {
-        val shareIntent = ShareCompat.IntentBuilder.from(this)
+        val shareIntent = ShareCompat.IntentBuilder(this)
             .setText(getString(R.string.share_text, dessertsSold, revenue))
             .setType("text/plain")
             .intent
