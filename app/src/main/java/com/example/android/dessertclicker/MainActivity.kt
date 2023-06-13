@@ -98,6 +98,11 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onStop Called")
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart Called")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy Called")
